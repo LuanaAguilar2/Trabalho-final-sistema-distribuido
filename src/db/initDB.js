@@ -1,6 +1,15 @@
 const { default: knex } = require("knex");
 
 const sqlite3 = require("sqlite3").verbose();
+const fs = require("fs");
+
+if(fs.existsSync(__dirname + "/database.db"))
+{
+    console.log("Database wasn't created because it already exists!");
+    return;
+}
+
+fs.writeFileSync(__dirname + "/database.db", "");
 
 const db_initializer = new sqlite3.Database("./src/db/database.db", sqlite3.OPEN_READWRITE, (err) => {
     if(err) return console.error(err.message);
@@ -18,8 +27,6 @@ const db = knex(
         }
     }
 )
-
-exports.db = db;
 
 table_initializer.then(() => {
     let lock = true;
@@ -43,9 +50,11 @@ table_initializer.then(() => {
     (values) =>{
         console.log("KNEX IS WORKING")
         console.log(values);
+        db.destroy();
     }).catch((err) => {
         console.log("knex error");
         console.log(err);
+        db.destroy();
     })
 })
 
