@@ -19,6 +19,8 @@ const db = knex(
     }
 )
 
+exports.db = db;
+
 table_initializer.then(() => {
     let lock = true;
 
