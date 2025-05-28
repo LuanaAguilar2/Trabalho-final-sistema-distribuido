@@ -1,4 +1,5 @@
-const db = require("../db/connection")
+const connection = require("../db/connection")
+const db = connection.db;
 
 const Livro = {
   //método para retornar todos os livros
