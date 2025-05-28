@@ -10,6 +10,45 @@ const db_initializer = new sqlite3.Database("./src/db/database.db", sqlite3.OPEN
 
 let table_initializer = init_all();
 
+const db = knex(
+    {
+        client: 'sqlite3',
+        connection: {
+            filename: __dirname + '/database.db'
+        }
+    }
+)
+
+exports.db = db;
+
+table_initializer.then(() => {
+    let lock = true;
+
+    db_initializer.close((err) =>
+    {
+        if(err)
+        {
+            console.warn("Error closing initializer.");
+            console.log(err);
+            lock = false;
+            return;
+        }
+        
+        lock = false;
+        console.log("Successfully closed initializer.");
+    });
+})
+.then(() => {
+    db.select('tbl_name').from('sqlite_master').where({type: 'table'}).then(
+    (values) =>{
+        console.log("KNEX IS WORKING")
+        console.log(values);
+    }).catch((err) => {
+        console.log("knex error");
+        console.log(err);
+    })
+})
+
 function init_all()
 {
     return new Promise(async (resolve, reject) => 
@@ -94,56 +133,3 @@ function init_rent()
         );
     });
 }
-
-/*db_initializer.all("SELECT tbl_name FROM sqlite_master WHERE type = \'table\'", (err, res) => {
-    if(err)
-    {
-        final_lock = true;
-        return console.log(err);
-    }
-
-    console.log("\nEXISTING TABLES ARRAY");
-    console.log(res);
-    console.log();
-    final_lock = true;
-});*/
-
-const db = knex(
-    {
-        client: 'sqlite3',
-        connection: {
-            filename: __dirname + '/database.db'
-        }
-    }
-)
-
-function test_database(result)
-{
-    db.select('tbl_name').from('sqlite_master').where({type: 'table'}).then(
-    (values) =>{
-        console.log("KNEX IS WORKING")
-        console.log(values);
-    }).catch((err) => {
-        console.log("knex error");
-        console.log(err);
-    })
-}
-
-table_initializer.then(() => {
-    let lock = true;
-
-    db_initializer.close((err) =>
-    {
-        if(err)
-        {
-            console.warn("Error closing initializer.");
-            console.log(err);
-            lock = false;
-            return;
-        }
-        
-        lock = false;
-        console.log("Successfully closed initializer.");
-    });
-})
-.then(test_database)
