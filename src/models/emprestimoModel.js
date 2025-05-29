@@ -15,3 +15,5 @@ const Emprestimo = {
     //Método para remover um aluguel especifico que um usuário fez de um livro.
     removeRentListing: (user_id, book_id) => db("livro_emprestado").where("id_usuario", user_id).andWhere("id_livro", book_id).delete()
 }
+
+module.exports = Emprestimo;
