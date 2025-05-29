@@ -14,6 +14,14 @@ function registerRoutes(server_arg) {
     version : "1.0.0"
 })
 
+server.use( restify.plugins.acceptParser( server.acceptable ) )
+server.use( restify.plugins.queryParser() )
+server.use( restify.plugins.bodyParser() )
+
+server.listen( 2003, function(){
+    console.log( "%s executando em: %s" , server.name, server.url)
+} )
+
   //endpoints usuario
   server.get("/usuarios", usuarioController.getAll)
   server.get("/usuarios/:idUser", usuarioController.getById)
