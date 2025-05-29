@@ -1,4 +1,6 @@
-const usuarioController = require("../controllers/produtoController")
+const usuarioController = require("../controllers/usuarioController")
+const livroController = require("../controllers/livroController")
+const emprestimoController = require("../controllers/emprestimoController")
 
 //define os endpoints
 function registerRoutes(server) {
