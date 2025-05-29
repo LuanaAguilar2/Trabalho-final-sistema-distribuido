@@ -1,10 +1,11 @@
 const usuarioController = require("../controllers/usuarioController")
 const livroController = require("../controllers/livroController")
 const emprestimoController = require("../controllers/emprestimoController")
+const restify = require("restify");
 
 //define os endpoints
-function registerRoutes(server) {
-  server.get("/", (req, res, next) => {
+function registerRoutes(server_arg) {
+  server_arg.get("/", (req, res, next) => {
     res.send({resposta: "Sejam bem-vindos à nossa Lojinha"})
   })
 
