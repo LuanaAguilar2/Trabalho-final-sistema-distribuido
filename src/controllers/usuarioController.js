@@ -1,12 +1,12 @@
 const Usuario = require("../models/usuarioModel")
 const errors = require("restify-errors")
-const usuarioView = require("../views/usuarioView")
+//const usuarioView = require("../views/usuarioView")
 
 //função que retorna todos os usuários
 async function getAll(req, res){
   try{
     const usuarios = await Usuario.getAll()
-    res.send(usuarioView.viewAllClients(usuarios))
+    res.send(usuarios)
   }
   catch (err){
     res.send(new errors.InternalServerError("Erro ao buscar usuários"))
@@ -21,7 +21,7 @@ async function getById(req, res){
       if (!usuario){
         res.send(404, {message: `O usuário com ID ${id} não foi encontrado`})
       }
-      res.send(usuarioView.viewClient(usuario))
+      res.send(usuario)
   }
   catch (err){
     res.send(new errors.InternalServerError(`Erro ao buscar usuário com ID ${id}`))
@@ -33,7 +33,7 @@ async function create(req, res){
   try{
     const [id] = await Usuario.create(req.body)
     const usuarioNew = await Usuario.getById(id)
-    res.send(201, usuarioView.viewClient(usuarioNew))
+    res.send(201, usuarioNew)
   }
   catch (err){
     res.send(new errors.InternalServerError("Erro ao criar usuário"))
