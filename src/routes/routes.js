@@ -3,24 +3,25 @@ const livroController = require("../controllers/livroController")
 const emprestimoController = require("../controllers/emprestimoController")
 const restify = require("restify");
 
-//define os endpoints
-function registerRoutes(server_arg) {
-  server_arg.get("/", (req, res, next) => {
-    res.send({resposta: "Sejam bem-vindos à nossa Lojinha"})
-  })
-
-  const server = restify.createServer( {
-    name : "Livraria" ,
-    version : "1.0.0"
+const server = restify.createServer( {
+      name : "Livraria" ,
+      version : "1.0.0"
 })
 
-server.use( restify.plugins.acceptParser( server.acceptable ) )
-server.use( restify.plugins.queryParser() )
-server.use( restify.plugins.bodyParser() )
+//define os endpoints
+function registerRoutes() {
+  server.get("/", (req, res, next) => {
+    res.send({resposta: "Sejam bem-vindos à Livraria"});
+    next();
+  })
 
-server.listen( 2003, function(){
-    console.log( "%s executando em: %s" , server.name, server.url)
-} )
+  server.use( restify.plugins.acceptParser( server.acceptable ) )
+  server.use( restify.plugins.queryParser() )
+  server.use( restify.plugins.bodyParser() )
+
+  server.listen( 2003, function(){
+      console.log( "%s executando em: %s" , server.name, server.url)
+  } )
 
   //endpoints usuario
   server.get("/usuarios", usuarioController.getAll)
