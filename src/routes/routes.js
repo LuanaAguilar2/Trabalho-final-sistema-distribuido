@@ -8,6 +8,11 @@ function registerRoutes(server) {
     res.send({resposta: "Sejam bem-vindos à nossa Lojinha"})
   })
 
+  const server = restify.createServer( {
+    name : "Livraria" ,
+    version : "1.0.0"
+})
+
   //endpoints usuario
   server.get("/usuarios", usuarioController.getAll)
   server.get("/usuarios/:idUser", usuarioController.getById)
