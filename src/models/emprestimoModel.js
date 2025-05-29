@@ -8,6 +8,8 @@ const Emprestimo = {
     getAllRentedByUserId: (id) => db("livro_emprestado").where("id_usuario", id),
     //Método para retornar todos os alugueis de um livro.
     getAllByBookId: (id) =>  db("livro_emprestado").where("id_livro", id),
+    //Método para criar um aluguel especifico que um usuário fez de um livro.
+    create: (data) => db("livro_emprestado").insert(data),
     //Método para retornar um aluguel especifico que um usuário fez de um livro.
     getRentListing: (user_id, book_id) => db("livro_emprestado").where("id_usuario", user_id).andWhere("id_livro", book_id).first(),
     //Método para atualizar um aluguel especifico que um usuário fez de um livro.

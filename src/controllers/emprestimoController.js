@@ -50,6 +50,18 @@ async function getUserBookRent(req, res){
   }
 }
 
+//função que cria um aluguel baseado nos dados fornecidos
+async function create(req, res){ 
+  try{
+    const [id_usuario, id_livro] = await Emprestimo.create(req.body)
+    const emprestimoNew = await Emprestimo.getRentListing(id_usuario, id_livro);
+    res.send(201, emprestimoNew)
+  }
+  catch (err){
+    res.send(new errors.InternalServerError("Erro ao criar usuário"))
+  }
+}
+
 //função que atualiza os dados de um emprestimo baseado nos dados fornecidos
 async function update(req, res){
     const id_user = req.params.idUser;
