@@ -37,6 +37,14 @@ function registerRoutes() {
   server.put("/livros/:idBook", livroController.update)
   server.del("/livros/:idBook", livroController.remove)
 
+  
+  //endpoints empretismo
+  server.get("/emprestimo", emprestimoController.getAll)
+  server.get("emprestimo/:idEmprestimo", emprestimoController.getById)
+  server.post("/emprestimo", emprestimoController.create)
+  server.put("/emprestimo/:idEmprestimo", emprestimoController.update)
+  server.del("/emprestimo/:idEmprestimo", emprestimoController.remove)
+  
   return server;
 }
 
