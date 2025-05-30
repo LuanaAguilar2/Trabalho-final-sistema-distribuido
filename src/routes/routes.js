@@ -20,7 +20,7 @@ function registerRoutes() {
   server.use( restify.plugins.bodyParser() )
 
   server.listen( 2003, function(){
-      console.log( "%s executando em: %s" , server.name, server.url)
+      console.log( "%s executando em: %s" , server.name, server.url.replace("[::]", "localhost"))
   } )
 
   //endpoints usuario
