@@ -37,15 +37,23 @@ function registerRoutes() {
   server.put("/livros/:idBook", livroController.update)
   server.del("/livros/:idBook", livroController.remove)
 
-  
-  //endpoints empretismo
-  server.get("/emprestimo", emprestimoController.getAll)
-  server.get("emprestimo/:idEmprestimo", emprestimoController.getById)
-  server.post("/emprestimo", emprestimoController.create)
-  server.put("/emprestimo/:idEmprestimo", emprestimoController.update)
-  server.del("/emprestimo/:idEmprestimo", emprestimoController.remove)
-  
   return server;
 }
+
+const emprestimoController = require("../controllers/emprestimoController");
+
+function emprestimoRoutes(server) {
+
+  server.get("/emprestimos", emprestimoController.getAll);
+  server.get("/emprestimos/usuario/:idUser", emprestimoController.getByUserId);
+  server.get("/emprestimos/livro/:idBook", emprestimoController.getByBookId);
+  server.get("/emprestimos/usuario/:idUser/livro/:idBook", emprestimoController.getUserBookRent);
+  server.post("/emprestimos", emprestimoController.create);
+  server.put("/emprestimos/usuario/:idUser/livro/:idBook", emprestimoController.update);
+  server.patch("/emprestimos/usuario/:idUser/livro/:idBook", emprestimoController.patch);
+  server.del("/emprestimos/usuario/:idUser/livro/:idBook", emprestimoController.remove);
+}
+
+module.exports = emprestimoRoutes;
 
 module.exports = registerRoutes
