@@ -1,6 +1,6 @@
 const Livro = require("../models/livroModel")
 const errors = require("restify-errors")
-const livroView = require("../views/livroView")
+//const livroView = require("../views/livroView")
 
 //função que retorna todos os livros
 async function getAll(req, res){

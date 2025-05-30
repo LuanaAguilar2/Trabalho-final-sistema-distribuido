@@ -37,6 +37,7 @@ function registerRoutes() {
   server.put("/livros/:idBook", livroController.update)
   server.del("/livros/:idBook", livroController.remove)
 
+  return server;
 }
 
 module.exports = registerRoutes

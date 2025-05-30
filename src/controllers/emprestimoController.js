@@ -116,6 +116,7 @@ module.exports = {
     getByUserId,
     getByBookId,
     getUserBookRent,
+    create,
     update,
     remove,
     patch
