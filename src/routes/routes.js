@@ -37,10 +37,10 @@ function registerRoutes() {
   server.put("/livros/:idBook", livroController.update)
   server.del("/livros/:idBook", livroController.remove)
 
+  emprestimoRoutes(server);
+
   return server;
 }
-
-const emprestimoController = require("../controllers/emprestimoController");
 
 function emprestimoRoutes(server) {
 
@@ -54,6 +54,6 @@ function emprestimoRoutes(server) {
   server.del("/emprestimos/usuario/:idUser/livro/:idBook", emprestimoController.remove);
 }
 
-module.exports = emprestimoRoutes;
+//module.exports = emprestimoRoutes;
 
 module.exports = registerRoutes
