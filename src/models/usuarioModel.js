@@ -11,7 +11,10 @@ const Usuario = {
   //método para atualizar os dados de um usuario de certo id a partir dos dados fornecidos
   update: (id, data) => db("usuario").where("id", id).update(data),
   //método para deletar um usuario com certo id
-  remove: (id) => db("usuario").where("id", id).delete()
+  remove: (id) => db("usuario").where("id", id).delete(),
+  //método para atualizar parcialmente os dados
+  patch: (id, data) => db("usuario").where("id", id).update(data)
+
 }
 
 module.exports = Usuario

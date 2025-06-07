@@ -1,12 +1,12 @@
 const Livro = require("../models/livroModel")
 const errors = require("restify-errors")
-//const livroView = require("../views/livroView")
+const livroView = require("../views/livroView")
 
 //função que retorna todos os livros
 async function getAll(req, res){
   try{
     const livros = await Livro.getAll()
-    res.send(livroView.viewAllClients(livros))
+    res.send(livroView.viewAllLivros(livros))
   }
   catch (err){
     res.send(new errors.InternalServerError("Erro ao buscar livros"))
@@ -21,7 +21,7 @@ async function getById(req, res){
       if (!livro){
         res.send(404, {message: `O livro com ID ${id} não foi encontrado`})
       }
-      res.send(livroView.viewClient(livro))
+      res.send(livroView.viewLivro(livro))
   }
   catch (err){
     res.send(new errors.InternalServerError(`Erro ao buscar livro com ID ${id}`))
@@ -31,9 +31,9 @@ async function getById(req, res){
 //função que cria um usuário baseado nos dados fornecidos
 async function create(req, res){ 
   try{
-    const [id] = await Produto.create(req.body)
-    const livroNew = await Produto.getById(id)
-    res.send(201, livroView.viewClient(livroNew))
+    const [id] = await Livro.create(req.body)
+    const livroNew = await Livro.getById(id)
+    res.send(201, livroView.viewLivro(livroNew))
   }
   catch (err){
     res.send(new errors.InternalServerError("Erro ao criar livro"))

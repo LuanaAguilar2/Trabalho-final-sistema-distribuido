@@ -15,7 +15,9 @@ const Emprestimo = {
     //Método para atualizar um aluguel especifico que um usuário fez de um livro.
     updateRentListing: (user_id, book_id, data) => db("livro_emprestado").where("id_usuario", user_id).andWhere("id_livro", book_id).update(data),
     //Método para remover um aluguel especifico que um usuário fez de um livro.
-    removeRentListing: (user_id, book_id) => db("livro_emprestado").where("id_usuario", user_id).andWhere("id_livro", book_id).delete()
+    removeRentListing: (user_id, book_id) => db("livro_emprestado").where("id_usuario", user_id).andWhere("id_livro", book_id).delete(),
+    //método para atualizar parcialmente os dados
+    patchRentListing: (user_id, book_id, data) => db("livro_emprestado").where("id_usuario", user_id).andWhere("id_livro", book_id).update(data)
 }
 
 module.exports = Emprestimo;

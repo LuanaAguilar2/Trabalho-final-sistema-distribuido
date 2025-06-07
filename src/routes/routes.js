@@ -1,27 +1,13 @@
 const usuarioController = require("../controllers/usuarioController")
 const livroController = require("../controllers/livroController")
 const emprestimoController = require("../controllers/emprestimoController")
-const restify = require("restify");
-
-const server = restify.createServer( {
-      name : "Livraria" ,
-      version : "1.0.0"
-})
 
 //define os endpoints
-function registerRoutes() {
+function registerRoutes(server) {
   server.get("/", (req, res, next) => {
     res.send({resposta: "Sejam bem-vindos à Livraria"});
     next();
   })
-
-  server.use( restify.plugins.acceptParser( server.acceptable ) )
-  server.use( restify.plugins.queryParser() )
-  server.use( restify.plugins.bodyParser() )
-
-  server.listen( 2003, function(){
-      console.log( "%s executando em: %s" , server.name, server.url.replace("[::]", "localhost"))
-  } )
 
   //endpoints usuario
   server.get("/usuarios", usuarioController.getAll)
@@ -37,23 +23,16 @@ function registerRoutes() {
   server.put("/livros/:idBook", livroController.update)
   server.del("/livros/:idBook", livroController.remove)
 
-  emprestimoRoutes(server);
-
-  return server;
-}
-
-function emprestimoRoutes(server) {
-
+  //endpoints emprestimo
   server.get("/emprestimos", emprestimoController.getAll);
-  server.get("/emprestimos/usuario/:idUser", emprestimoController.getByUserId);
-  server.get("/emprestimos/livro/:idBook", emprestimoController.getByBookId);
-  server.get("/emprestimos/usuario/:idUser/livro/:idBook", emprestimoController.getUserBookRent);
+  server.get("/emprestimos/usuarios/:idUser", emprestimoController.getByUserId);
+  server.get("/emprestimos/livros/:idBook", emprestimoController.getByBookId);
+  server.get("/emprestimos/usuarios/:idUser/livros/:idBook", emprestimoController.getUserBookRent);
   server.post("/emprestimos", emprestimoController.create);
-  server.put("/emprestimos/usuario/:idUser/livro/:idBook", emprestimoController.update);
-  server.patch("/emprestimos/usuario/:idUser/livro/:idBook", emprestimoController.patch);
-  server.del("/emprestimos/usuario/:idUser/livro/:idBook", emprestimoController.remove);
-}
+  server.put("/emprestimos/usuarios/:idUser/livros/:idBook", emprestimoController.update);
+  server.patch("/emprestimos/usuarios/:idUser/livros/:idBook", emprestimoController.patch);
+  server.del("/emprestimos/usuarios/:idUser/livros/:idBook", emprestimoController.remove);
 
-//module.exports = emprestimoRoutes;
+}
 
 module.exports = registerRoutes

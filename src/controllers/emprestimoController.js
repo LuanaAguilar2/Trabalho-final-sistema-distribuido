@@ -1,15 +1,15 @@
 const Emprestimo = require("../models/emprestimoModel")
 const errors = require("restify-errors")
-//const emprestimoView = require("../views/emprestimoView")
+const emprestimoView = require("../views/emprestimoView")
 
 //função que retorna todos os emprestimos
 async function getAll(req, res){
   try{
     const emprestimos = await Emprestimo.getAll()
-    res.send(emprestimos)
+    res.send(await emprestimoView.viewAllEmprestimos(emprestimos))
   }
   catch (err){
-    res.send(new errors.InternalServerError("Erro ao buscar emprestimos."))
+    res.send(new errors.InternalServerError("Erro ao buscar emprestimos"))
   }
 }
 
@@ -17,7 +17,7 @@ async function getByUserId(req, res){
   const id = req.params.idUser
   try{
     const emprestimos = await Emprestimo.getAllRentedByUserId(id);
-      res.send(emprestimos);
+      res.send(await emprestimoView.viewAllEmprestimos(emprestimos));
   }
   catch (err){
     res.send(new errors.InternalServerError(`Erro ao buscar emprestimos pelo cliente com ID ${id}`))
@@ -37,28 +37,31 @@ async function getByBookId(req, res){
 
 async function getUserBookRent(req, res){
   const id_user = req.params.idUser;
-    const id_book = req.params.idBook;
+  const id_book = req.params.idBook;
   try{
     const emprestimo = await Emprestimo.getRentListing(id_user, id_book)
       if (!emprestimo){
-        res.send(404, {message: `O ealuguel do livro com ID ${id_book} feito pelo usuário com ID ${id_user} não foi encontrado`})
+        res.send(404, {message: `O aluguel do livro com ID ${id_book} feito pelo usuário com ID ${id_user} não foi encontrado`})
       }
-      res.send(emprestimo)
+      res.send(await emprestimoView.viewEmprestimo(emprestimo))
   }
   catch (err){
     res.send(new errors.InternalServerError(`Erro ao buscar o aluguel do livro com ID ${id_book} feito pelo usuário com ID ${id_user}.`))
   }
 }
 
-//função que cria um aluguel baseado nos dados fornecidos
+//função que cria um emprestimo baseado nos dados fornecidos
 async function create(req, res){ 
-  try{
-    const [id_usuario, id_livro] = await Emprestimo.create(req.body)
-    const emprestimoNew = await Emprestimo.getRentListing(id_usuario, id_livro);
-    res.send(201, emprestimoNew)
-  }
-  catch (err){
-    res.send(new errors.InternalServerError("Erro ao criar usuário"))
+  try {
+    await Emprestimo.create(req.body)
+
+    const { id_usuario, id_livro } = req.body
+    const emprestimoNew = await Emprestimo.getRentListing(id_usuario, id_livro)
+
+    res.send(201, await emprestimoView.viewEmprestimo(emprestimoNew))
+  } catch (err) {
+    console.error("Erro ao criar emprestimo:", err)
+    res.send(new errors.InternalServerError("Erro ao criar emprestimo"))
   }
 }
 
@@ -104,7 +107,7 @@ async function patch(req, res){
     }
 
     const dadosAtualizados = {...emprestimoAtual, ...req.body}
-    await Emprestimo.updateRentListing(id_user, id_book, dadosAtualizados)
+    await Emprestimo.patchRentListing(id_user, id_book, dadosAtualizados)
     res.send(200, {success: true})
   } catch (err) {
     res.send(new errors.InternalServerError(`Erro ao aplicar patch no aluguel do livro com ID ${id_book} feito pelo usuário com ID ${id_user}.`))
